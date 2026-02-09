@@ -372,12 +372,6 @@
       outline: none; border-color: var(--navy);
     }
     .form-group textarea { resize: vertical; min-height: 100px; }
-    .form-status {
-      text-align: center; padding: 12px; border-radius: var(--radius-sm);
-      font-size: 0.9rem; font-weight: 500; margin-top: 12px; display: none;
-    }
-    .form-status.success { display: block; background: var(--sage-light); color: var(--sage); }
-    .form-status.error { display: block; background: var(--terracotta-light); color: var(--terracotta); }
 
     /* ===== FOOTER ===== */
     footer {
@@ -735,9 +729,8 @@
             </div>
           </div>
         </div>
-        <!-- FORMSPREE: Replace YOUR_FORM_ID below with your Formspree endpoint.
-             Sign up at https://formspree.io, create a form, and paste the ID. -->
-        <form class="contact-form fade-up" id="contact-form" action="https://formspree.io/f/maqdnabv" method="POST">
+        <form class="contact-form fade-up" action="https://formspree.io/f/maqdnabv" method="POST">
+          <input type="hidden" name="_next" value="https://www.plutusconsulting.xyz/#contact">
           <div class="form-group">
             <label for="name">Your Name</label>
             <input type="text" id="name" name="name" placeholder="Jane Smith" required>
@@ -755,7 +748,6 @@
             <textarea id="message" name="message" placeholder="Tell us about your current bookkeeping setup, pain points, or questions..."></textarea>
           </div>
           <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
-          <div class="form-status" id="form-status"></div>
         </form>
       </div>
     </div>
@@ -810,7 +802,6 @@
     // CONFIGURATION — Update these values with your actual URLs
     // ============================================================
     const CALENDLY_URL = ''; // e.g., 'https://calendly.com/rajat-plutus/15min'
-    const FORMSPREE_ID = 'maqdnabv';
     // ============================================================
 
     // If Calendly URL is set, redirect CTA buttons there instead of #contact
@@ -820,11 +811,6 @@
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
       });
-    }
-
-    // If Formspree ID is set, update form action
-    if (FORMSPREE_ID) {
-      document.getElementById('contact-form').action = 'https://formspree.io/f/' + FORMSPREE_ID;
     }
 
     // Scroll shadow on nav
@@ -848,42 +834,6 @@
     // Close privacy modal on overlay click
     document.getElementById('privacy-modal').addEventListener('click', function(e) {
       if (e.target === this) this.classList.remove('active');
-    });
-
-    // Formspree form submission with AJAX
-    document.getElementById('contact-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const form = this;
-      const btn = form.querySelector('button[type="submit"]');
-      const status = document.getElementById('form-status');
-      const originalText = btn.textContent;
-
-      btn.textContent = 'Sending...';
-      btn.disabled = true;
-      status.className = 'form-status';
-      status.style.display = 'none';
-
-      fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
-      }).then(response => {
-        if (response.ok) {
-          status.textContent = 'Message sent! We\'ll be in touch within 24 hours.';
-          status.className = 'form-status success';
-          form.reset();
-        } else {
-          return response.json().then(data => {
-            throw new Error(data.errors ? data.errors.map(e => e.message).join(', ') : 'Something went wrong.');
-          });
-        }
-      }).catch(error => {
-        status.textContent = 'Could not send message. Please email us directly at rajat@plutusconsulting.xyz';
-        status.className = 'form-status error';
-      }).finally(() => {
-        btn.textContent = originalText;
-        btn.disabled = false;
-      });
     });
   </script>
 
