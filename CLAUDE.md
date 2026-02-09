@@ -4,45 +4,50 @@
 Single-page marketing website for Plutus Consulting, an AI-powered bookkeeping business targeting sales professionals and small business owners.
 
 - **Domain:** www.plutusconsulting.xyz
+- **Live URL:** https://www.plutusconsulting.xyz
+- **Repo:** https://github.com/awms-dev/plutus-consulting-website
 - **Owner:** Rajat Gogia
 - **Entity:** LLC (active)
 
 ## Tech Stack
 - Static HTML/CSS/JS (single `index.html` file)
 - Google Fonts: DM Sans + DM Serif Display
-- Formspree for contact form submissions
-- Calendly for booking consultations (to be configured)
+- Formspree for contact form submissions (endpoint: `maqdnabv`)
+- Calendly for booking consultations (30-min slot)
 - No build tools or frameworks — deploy as-is
 
 ## Configuration
-Two variables at the top of the `<script>` block in `index.html` need to be set before going live:
+One variable at the top of the `<script>` block in `index.html`:
 
 ```js
-const CALENDLY_URL = ''; // Your Calendly booking link
-const FORMSPREE_ID = ''; // Your Formspree form endpoint ID
+const CALENDLY_URL = 'https://calendly.com/rajatgogia-plutusconsulting/30min';
 ```
 
-Until `CALENDLY_URL` is set, all CTA buttons scroll to the contact form. Once set, they redirect to Calendly.
+When set, all CTA buttons ("Book a Free Consultation", "Get Started") open Calendly in a new tab. If cleared, they fall back to scrolling to `#contact`.
 
-Until `FORMSPREE_ID` is set, the contact form will fail to submit. Sign up at https://formspree.io and create a form to get the ID.
+The contact form POSTs directly to `https://formspree.io/f/maqdnabv` with a `_next` redirect back to the site. No JavaScript involved in form submission.
 
 ## Site Structure
 - **Nav:** Fixed top nav with blur backdrop, mobile hamburger menu
-- **Hero:** Headline, stats, dual CTA buttons
+- **Hero:** Headline, stats (5hrs saved, 24hr turnaround, $0 surprises), dual CTA buttons
 - **How It Works:** 3-step cards
 - **Services:** 4-card grid (categorization, reconciliation, reporting, CPA-ready)
 - **Pricing:** 3 tiers — Essentials ($250), Growth ($450), Premium ($700)
 - **Why Plutus:** Value props + benefits panel
 - **CTA:** Full-width conversion section
-- **Contact:** Info + Formspree-powered form
+- **Contact:** Description + Formspree-powered form (no email/website displayed)
 - **Footer:** Nav links + Privacy Policy modal
 
 ## Deployment
-This is a static site. It can be deployed to any static hosting:
-- GitHub Pages (simplest — enable in repo settings)
-- Netlify (drag and drop or connect repo)
-- Vercel
-- Cloudflare Pages
+- Hosted on **GitHub Pages** from `main` branch
+- Custom domain configured via `CNAME` file
+- HTTPS enforced, SSL cert auto-provisioned by GitHub
+- Every push to `main` auto-deploys
+
+## DNS (Squarespace/Google Domains)
+- `www` CNAME → `awms-dev.github.io`
+- Nameservers: Google Domains (`ns-cloud-b*.googledomains.com`)
+- Apex domain A records for GitHub Pages IPs not yet configured
 
 ## Design Tokens
 ```
